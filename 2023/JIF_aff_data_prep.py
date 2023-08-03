@@ -52,9 +52,7 @@ JIF_scores_sub = JIF_scores_raw[
 # May be necessary to do some manual work
 
 Pubs_JIF_sublow = Pubs_JIF_sub.apply(lambda x: x.astype(str).str.lower())
-print(Pubs_JIF_sublow.head())
 JIF_scores_sublow = JIF_scores_sub.apply(lambda x: x.astype(str).str.lower())
-print(JIF_scores_sublow.head())
 # Pubs_JIF_sublow["Journal"] = Pubs_JIF_sublow["Journal"].str.replace(".", "", regex=True)
 # JIF_scores_sublow["JCR Abbreviation"] = JIF_scores_sublow[
 #     "JCR Abbreviation"
@@ -90,51 +88,32 @@ JIF_merge_fullnames = pd.merge(
 
 JIF_merge_fullnames.drop_duplicates(subset="UT", keep="first", inplace=True)
 
-JIF_merge_fullnames.to_excel("firstcheck_aff.xlsx")
+JIF_merge_fullnames.rename(
+    columns={
+        "JIF Without Self Cites_y": "JIF",
+        "Publication_year": "Year",
+    },
+    inplace=True,
+)
 
-# JIF_merge_fullnames["JIF Without Self Cites_y"] = JIF_merge_fullnames[
-#     "JIF Without Self Cites_y"
-# ].fillna(JIF_merge_fullnames["JIF Without Self Cites_x"])
+JIF_merge_fullnames = JIF_merge_fullnames.replace("n/a", np.nan)
 
-# # JIF_merge_fullnames = JIF_merge_fullnames.drop(
-# #     [
-# #         "Journal name",
-# #         "JCR Abbreviated Title",
-# #         "JIF Without Self Cites_x",
-# #     ],
-# #     axis=1,
-# # )
+JIF_merge_fullnames["JIF"] = JIF_merge_fullnames["JIF"].fillna(-1)
 
-# # ## below prints out a file that can be checked to determine whether
-# # ## manual work may increase the number of matches
+JIF_merge_fullnames["JIF"] = pd.to_numeric(JIF_merge_fullnames["JIF"])
 
-# # JIF_merge_fullnames.rename(
-# #     columns={
-# #         "JIF Without Self Cites_y": "JIF",
-# #         "Publication_year": "Year",
-# #     },
-# #     inplace=True,
-# # )
+JIF_merge_fullnames.to_excel("firstcheck_aff_Aug.xlsx")
 
-# # JIF_merge_weISSN = JIF_merge_weISSN.replace("n/a", np.nan)
+JIF_merge_fullnames["JIF"] = JIF_merge_fullnames["JIF"].fillna(-1)
+JIF_merge_fullnames["JIF"] = pd.to_numeric(JIF_merge_fullnames["JIF"])
+JIF_merge_fullnames["JIFcat"] = pd.cut(
+    JIF_merge_fullnames["JIF"],
+    bins=[-1, 0, 6, 9, 25, 1000],
+    include_lowest=True,
+    labels=["JIF unknown", "JIF <6", "JIF 6-9", "JIF 9-25", "JIF >25"],
+)
 
-# # JIF_merge_weISSN["JIF"] = JIF_merge_weISSN["JIF"].fillna(-1)
+JIF_aff_data = JIF_merge_fullnames.groupby(["Year", "JIFcat"]).size().reset_index()
+JIF_aff_data.columns = ["Year", "JIFcat", "Count"]
 
-# # JIF_merge_weISSN["JIF"] = pd.to_numeric(JIF_merge_weISSN["JIF"])
-
-# # JIF_merge_weISSN.to_excel("Check_me_manual_affiliates_improve_June23.xlsx")
-
-
-# # # JIF_merge_weISSN["JIF"] = JIF_merge_weISSN["JIF"].fillna(-1)
-# # # JIF_merge_weISSN["JIF"] = pd.to_numeric(JIF_merge_weISSN["JIF"])
-# # # JIF_merge_weISSN["JIFcat"] = pd.cut(
-# # #     JIF_merge_weISSN["JIF"],
-# # #     bins=[-1, 0, 6, 9, 25, 1000],
-# # #     include_lowest=True,
-# # #     labels=["JIF unknown", "JIF <6", "JIF 6-9", "JIF 9-25", "JIF >25"],
-# # # )
-
-# # # JIF_fell_data = JIF_merge_weISSN.groupby(["Year", "JIFcat"]).size().reset_index()
-# # # JIF_fell_data.columns = ["Year", "JIFcat", "Count"]
-
-# # # JIF_fell_data.to_excel("categorise_affiliates_JIF_June23.xlsx")
+JIF_aff_data.to_excel("categorise_affiliates_JIF_Aug23.xlsx")
