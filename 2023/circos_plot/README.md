@@ -1,0 +1,9 @@
+## How to use the circos plot scripts
+
+- fac_map.py: prepares the data for use in the circos plot scripts. It is used by all 3 other python scripts (i.e. circosplot.py, filter_techdev.oy and techdev_circos.py). It works to match the labels of units used in the publications database (current in 2020) with official labels that should be shown on the plot. It will necessarily change every time that new data is used, so work should be completed to make appropriate matches (comments are provided in script to aid with this).
+
+- circosplot.py: as of 2020, there is no direct way to create a circos plot in python with freely available packages. This script contains multiple functions that enable one to be produced using plotly. Comments have been made in the script to show the sources used to generate the code, as well as to provide information on what certain functions so. Some manual changes will be needed when using new data, as you should only display units that have collaborated. Compute and storage are not shown in any year (as of 2020), so should be removed by default. In this version, the colours have been set so that units in the same platform are coloured the same way. This will require updating in accordance with platform structural changes. 
+
+- filter_techdev.py: this can be used to filter out just the publications involving technology development (as labelled by infrastructure staff). Changes will be needed to ensure that labels are correctly dealt with. It could be modified to isolate any other label used (i.e. collaborative and service). 
+
+- techdev_circos.py: Works in much the same way as circosplot.py. Again, it will require some manual cahnges to ensure that there are no units that show up in the plot as having 0 publications. Compute and storage is also excluded by default. 
