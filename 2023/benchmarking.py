@@ -227,7 +227,7 @@ fig.update_xaxes(
     ticktext=[
         "Biochemical Research Methods",
         "Biochemistry & Molecular Biology",
-        "Bioltechnology & Applied Microbiology",
+        "Biotechnology & Applied Microbiology",
         "Cell Biology",
         "Genetics & Heredity",
         "Oncology",
