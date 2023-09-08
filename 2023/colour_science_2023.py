@@ -132,6 +132,18 @@ SCILIFE_COLOURS_GREYS = [
     "#A6A6A6",  # medium grey
     "#3F3F3F",  # dark grey
 ]
+PLATFORM_FUNDING_COLOURS = {
+    "User Fees": "#A6A6A6",
+    "SciLifeLab Base": "#A7C947",
+    "SciLifeLab Instrument": "#E5E5E5",
+    "University": "#045C64",
+    "VR": "#491F53",
+    "KAW": "#4C979F",
+    "Vinnova": "#D3E4A3",
+    "Healthcare": "#D2C7D4",
+    "Other": "#3F3F3F",
+    "EU": "#A6CBCF",
+}
 # below is with the users unabbreviated (under this is abbreviated, used for pies)
 FACILITY_USER_AFFILIATION_COLOUR_OFFICIAL_UNABB = {
     "Chalmers University of Technology": "#006C5C",  # https://www.chalmers.se/SiteCollectionDocuments/om%20chalmers%20dokument/Grafisk%20profil/Chalmers_visuella_identitet_1.0_2018.pdf
